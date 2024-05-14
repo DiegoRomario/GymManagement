@@ -4,24 +4,17 @@ using MediatR;
 
 namespace GymManagement.Application.Subscriptions.Commands.DeleteSubscription;
 
-public class DeleteSubscriptionCommandHandler : IRequestHandler<DeleteSubscriptionCommand, ErrorOr<Deleted>>
+public class DeleteSubscriptionCommandHandler(
+    IAdminsRepository adminsRepository,
+    ISubscriptionsRepository subscriptionsRepository,
+    IUnitOfWork unitOfWork,
+    IGymsRepository gymsRepository)
+        : IRequestHandler<DeleteSubscriptionCommand, ErrorOr<Deleted>>
 {
-    private readonly IAdminsRepository _adminsRepository;
-    private readonly ISubscriptionsRepository _subscriptionsRepository;
-    private readonly IGymsRepository _gymsRepository;
-    private readonly IUnitOfWork _unitOfWork;
-
-    public DeleteSubscriptionCommandHandler(
-        IAdminsRepository adminsRepository,
-        ISubscriptionsRepository subscriptionsRepository,
-        IUnitOfWork unitOfWork,
-        IGymsRepository gymsRepository)
-    {
-        _adminsRepository = adminsRepository;
-        _subscriptionsRepository = subscriptionsRepository;
-        _unitOfWork = unitOfWork;
-        _gymsRepository = gymsRepository;
-    }
+    private readonly IAdminsRepository _adminsRepository = adminsRepository;
+    private readonly ISubscriptionsRepository _subscriptionsRepository = subscriptionsRepository;
+    private readonly IGymsRepository _gymsRepository = gymsRepository;
+    private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
     public async Task<ErrorOr<Deleted>> Handle(DeleteSubscriptionCommand command, CancellationToken cancellationToken)
     {
